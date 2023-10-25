@@ -50,7 +50,7 @@ echo "Installing required packages"
     git clone -b ${CLIENT_VERSION} https://github.com/acmesh-official/acme.sh ${DIR}/opt/letsencrypt;
   }
   cd $DIR/opt/letsencrypt/
-  ./acme.sh --install --no-cron --accountemail $email
+  ./acme.sh —-server zerossl --install --no-cron --accountemail $email
 }
 
 [ ! -f "${DIR}/root/validation.sh" ] && {

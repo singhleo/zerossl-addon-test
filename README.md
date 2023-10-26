@@ -1,16 +1,12 @@
-# ZeroSSL replacement addon for Let’s Encrypt Add-On for Automated SSL Certificates Configuration
+# ZeroSSL addon replacement for Let’s Encrypt Add-On for Automated SSL Certificates Configuration
 
 **[Let’s Encrypt](https://letsencrypt.org/)** is a free and open Certificate Authority, that simplifies and automates processes of browser-trusted SSL certificates issuing and appliance. Using this package you can automatically install Let’s Encrypt as an add-on to your environment.
 
 The installation can be performed on one of the following Jelastic containers as an entry point:
-* Load Balancers - _NGINX_, _Apache LB_, _HAProxy_, _Varnish_
-* Java application servers - _Tomcat_, _TomEE_, _GlassFish_, _Payara_, _Jetty_
-* PHP application servers - _Apache PHP_, _NGINX PHP_
-* Ruby application servers - _Apache Ruby_, _NGINX Ruby_
+* LLSMP
 
-If you require Let’s Encrypt SSL for any other stack, just add a load balancer in front of your application servers and install the add-on. SSL termination at load balancing level is used by default in clustered topologies.
 
-The Let’s Encrypt add-on allows to configure SSL for:
+The ZeroSSL add-on allows to configure SSL for:
 * **_internal environment address_**, which is composed of environment name and platform domain, to be served with a dummy (i.e. not commonly trusted) SSL certificate; this option can be used for testing purposes
 * **_external domain(s)_**, each of which should be preliminarily bound to external IP of the corresponding node - either master application server instance or load balancer - via [A Record](https://docs.jelastic.com/a-records-domain-names) or [CNAME](https://docs.jelastic.com/custom-domain-via-cname); provides trusted SSL certificates for production applications
 

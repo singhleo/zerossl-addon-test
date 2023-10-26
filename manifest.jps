@@ -1,7 +1,7 @@
 version: 2.0
 type: update
 build: 202310262036
-id: zerosso-ssl-addon
+id: zerossl-addon
 name: ZeroSSL Free SSL
 
 categories:
@@ -13,7 +13,7 @@ targetNodes:
   nodeType:
     - llsmp
 
-baseUrl: https://raw.githubusercontent.com/rapyd-cloud/lets-encrypt/master
+baseUrl: https://raw.githubusercontent.com/rapyd-cloud/zerossl-vz/master
 
 description:
   text: /text/description.md
@@ -21,8 +21,8 @@ description:
     by either internal or custom domain name using ZeroSSL instead of LetsEncrypt
 
 globals:
-  scriptSufix: zerossl-ssl
-  app_id: zerossl-ssl-addon
+  scriptSufix: zerossl-vz
+  app_id: zerossl-addon
   
 mixins:
   - configs/vers.yaml
@@ -108,7 +108,7 @@ onInstall:
 onUninstall:
   - checkClustering:
       nodeGroup: ${globals.nodeGroup}
-      app_id: zerossl-ssl-addon
+      app_id: zerossl-addon
   - if (globals.cluster):
       - markExecutedEnvFile:
           nodeGroup: ${targetNodes.nodeGroup}
@@ -189,7 +189,7 @@ actions:
   configure: 
     - checkClustering:
         nodeGroup: ${globals.nodeGroup}
-        app_id: zerossl-ssl-addon
+        app_id: zerossl-addon
     - if (globals.cluster):
         - if (!globals.isOppositeExecuted):
             - markExecutedEnvFile:

@@ -1,6 +1,6 @@
 # ZeroSSL addon replacement for Let’s Encrypt Add-On for Automated SSL Certificates Configuration
 
-**[Let’s Encrypt](https://letsencrypt.org/)** is a free and open Certificate Authority, that simplifies and automates processes of browser-trusted SSL certificates issuing and appliance. Using this package you can automatically install Let’s Encrypt as an add-on to your environment.
+** ZeroSSL is a free and open Certificate Authority, that simplifies and automates processes of browser-trusted SSL certificates issuing and appliance. Using this package you can automatically install ZeroSSL as an add-on to your environment.
 
 The installation can be performed on one of the following Jelastic containers as an entry point:
 * LLSMP

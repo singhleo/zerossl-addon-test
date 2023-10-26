@@ -1,10 +1,6 @@
-# Let’s Encrypt Add-On for Automated SSL Certificates Configuration
+# ZeroSSL replacement addon for Let’s Encrypt Add-On for Automated SSL Certificates Configuration
 
 **[Let’s Encrypt](https://letsencrypt.org/)** is a free and open Certificate Authority, that simplifies and automates processes of browser-trusted SSL certificates issuing and appliance. Using this package you can automatically install Let’s Encrypt as an add-on to your environment.
-
-<p align="center"> 
-<img src="https://github.com/jelastic-jps/lets-encrypt/blob/master/images/letsencrypt-jelastic-ssl.png" width="400">
-</p>
 
 The installation can be performed on one of the following Jelastic containers as an entry point:
 * Load Balancers - _NGINX_, _Apache LB_, _HAProxy_, _Varnish_

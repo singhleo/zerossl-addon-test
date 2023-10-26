@@ -61,14 +61,14 @@ seconds_before_expire=$(( $DAYS_BEFORE_EXPIRE * 24 * 60 * 60 ));
 
 [[ -f "/var/lib/jelastic/SSL/jelastic.crt" && "$withExtIp" != "false" ]] && exp_date=$(jem ssl checkdomain | python -c "import sys, json; print (json.load(sys.stdin)['expiredate'])");
 
-[ -z "$exp_date" ] && { echo "$(date) - no certificates for update" >> /var/log/letsencrypt.log; exit 0; };
+[ -z "$exp_date" ] && { echo "$(date) - no certificates for update" >> /var/log/zerossl.log; exit 0; };
 
 _exp_date_unixtime=$(date --date="$exp_date" "+%s");
 _cur_date_unixtime=$(date "+%s");
 _delta_time=$(( $_exp_date_unixtime - $_cur_date_unixtime  ));
 
 [[ $_delta_time -le $seconds_before_expire ]] && {
-    echo "$(date) - update required" >> /var/log/letsencrypt.log;
+    echo "$(date) - update required" >> /var/log/zerossl.log;
     validateLatestVersion
     resp=$($WGET --no-check-certificate -qO- "${auto_update_url}");
     [[ $? -ne 0 ]] && [[ -z $resp ]] && resp="Temporary network Issue";

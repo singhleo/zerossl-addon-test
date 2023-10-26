@@ -1,6 +1,6 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
-DEFAULT_LOG_FILE=$DIR/var/log/letsencrypt/letsencrypt.log-$(date '+%s')
+DEFAULT_LOG_FILE=$DIR/var/log/zerossl/zerossl.log-$(date '+%s')
 KEYS_DIR="$DIR/var/lib/jelastic/keys/"
 SETTINGS="$DIR/opt/letsencrypt/settings"
 DOMAIN_SEP=" -d "
@@ -46,7 +46,7 @@ skipped_domains=$(echo $skipped_domains | sed -r 's/\s+/ -d /g');
 #Kill hanged certificate requests
 killall -9 tinyproxy > /dev/null 2>&1
 
-mkdir -p $DIR/var/log/letsencrypt
+mkdir -p $DIR/var/log/zerossl
 
 [[ "$webroot" == "false" ]] && {
     service tinyproxy start || { echo "Failed to start proxy server" ; exit 3 ; }

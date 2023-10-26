@@ -1,6 +1,6 @@
-version: 1.3
+version: 2.0
 type: update
-build: 201807232048
+build: 202310262036
 id: zerosso-ssl-addon
 name: ZeroSSL Free SSL
 

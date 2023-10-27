@@ -63,6 +63,14 @@ buttons:
     action: configure
 
 onInstall:
+
+  - api[${targetNodes.nodeGroup}]:
+    - method: environment.control.AddContainerEnvVars
+      params:
+        vars: '{ "RAPYDEABKID" : "NrwZSgyX-WzUrKXQuDd-HA" }'
+    - method: environment.control.AddContainerEnvVars
+      params:
+        vars: '{ "RAPYDEABHMAC" : "PWT-wo_Ge5GVZ63pC0rZefqTjBjBk0QBnPIDisM_3CUFpFwzCQvDtKdOEtus4HsURIIYUaE3sUKcdWaNHQbHeQ" }'
   - setGlobals:
       nodeId: ${settings.nodeId:}
       nodeGroup: ${targetNodes.nodeGroup:}

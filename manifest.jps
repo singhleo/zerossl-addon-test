@@ -21,7 +21,7 @@ description:
     by either internal or custom domain name using ZeroSSL instead of LetsEncrypt
 
 globals:
-  scriptSufix: zerossl-vz
+  scriptSufix: zerossl-addon
   app_id: zerossl-addon
   
 mixins:

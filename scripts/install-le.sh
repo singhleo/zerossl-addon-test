@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /etc/profile
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
 WGET=$(which wget);
 BASE_URL=$1
@@ -50,6 +52,9 @@ echo "Installing required packages"
   }
   cd $DIR/opt/letsencrypt/
   ./acme.sh --server zerossl --install --no-cron --accountemail $email
+
+  ./acme.sh  --server zerossl --register-account --insecure --force --eab-kid $RAPYDEABKID --eab-hmac-key $RAPYDEABHMAC
+  
 }
 
 [ ! -f "${DIR}/root/validation.sh" ] && {

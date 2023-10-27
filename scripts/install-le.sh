@@ -16,7 +16,6 @@ echo Checking RPM database
   rpm -qa > /dev/null 2>&1  || rpm --rebuilddb
 } &> /dev/null
 
-
 echo "Installing required packages"
 {
   grep -q "CentOS release 6." /etc/system-release && {

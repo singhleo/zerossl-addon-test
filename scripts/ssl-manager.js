@@ -76,7 +76,7 @@ function SSLManager(config) {
     session = config.session || "";
 
     nodeManager = new NodeManager(config.envName, config.nodeId, config.baseDir);
-    nodeManager.setLogPath("var/log/letsencrypt.log");
+    nodeManager.setLogPath("var/log/zerossl.log");
     nodeManager.setBackupPath("var/lib/jelastic/keys/letsencrypt");
     nodeManager.setCustomSettingsPath("var/lib/jelastic/keys/letsencrypt/settings-custom");
 
@@ -233,7 +233,7 @@ function SSLManager(config) {
         var skippedDomains = me.getSkippedDomains().join(DOMAINS_SEP);
 
         if (skippedDomains) {
-            skippedDomains = ">**Note:** The Let’s Encrypt SSL was not issued for the following domain names: \n > * " + me.formatDomains(skippedDomains, true) + "\n > \n > Login to your domain registrar admin panel and check [DNS records](https://docs.jelastic.com/custom-domains/#how-to-configure-dns-record) for the provided domains. Ensure they point to the correct IP (environment entry point or proxy if CDN or any other external balancer is used). Alternatively, remove invalid custom domains from the [Let's Encrypt](https://jelastic.com/blog/free-ssl-certificates-with-lets-encrypt/) settings.";
+            skippedDomains = ">**Note:** The ZeroSSK SSL was not issued for the following domain names: \n > * " + me.formatDomains(skippedDomains, true) + "\n > \n > Login to your domain registrar admin panel and check [DNS records](https://docs.jelastic.com/custom-domains/#how-to-configure-dns-record) for the provided domains. Ensure they point to the correct IP (environment entry point or proxy if CDN or any other external balancer is used). Alternatively, remove invalid custom domains from the [Let's Encrypt](https://jelastic.com/blog/free-ssl-certificates-with-lets-encrypt/) settings.";
         }
 
         resp.skippedDomains = skippedDomains || "";

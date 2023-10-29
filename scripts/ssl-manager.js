@@ -1236,8 +1236,22 @@ function SSLManager(config) {
             };
         }
 
+
+
         if (resp.result && resp.result == READ_TIMED_OUT) {
-            text = "The Let's Encrypt service is currently unavailable. Check the /var/log/letsencrypt log for more details or try again in a few minutes.";
+            text = "The ZeroSSL service has timed out. Check the /var/log/zerossl logs for more details or try again in a few minutes.";
+            return {
+                result: READ_TIMED_OUT,
+                error: text,
+                response: text,
+                type: "warning",
+                message: text
+            };
+        }
+
+        
+        if (resp.result && resp.result == READ_TIMED_OUT) {
+            text = "The ZeroSSL service is currently unavailable. Check the /var/log/zerossl logs for more details or try again in a few minutes.";
             return {
                 result: READ_TIMED_OUT,
                 error: text,

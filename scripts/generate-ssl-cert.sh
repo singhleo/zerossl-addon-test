@@ -10,8 +10,9 @@ WRONG_WEBROOT_ERROR=25
 UPLOAD_CERTS_ERROR=26
 TIME_OUT_ERROR=27
 NO_VALID_IP_ADDRESSES=28
+ZEROSSL_TIMEOUT_ERROR=50
 counter=1
-maxcounter=5
+maxcounter=10
 
 [ -f "${SETTINGS}" ] && source "${SETTINGS}" || { echo "No settings available" ; exit 3 ; }
 [ -f "${DIR}/root/validation.sh" ] && source "${DIR}/root/validation.sh" || { echo "No validation library available" ; exit 3 ; }
@@ -76,6 +77,11 @@ result_code=$GENERAL_RESULT_ERROR;
 while [ "$result_code" != "0" ]
 do
   [[ -z $domain ]] && break;
+
+  if [ "$counter" >= "$maxcounter" ]; then
+    zerossl_timeout=true;
+    break; 
+  fi
 
   # setup logfile
   LOG_FILE=$DEFAULT_LOG_FILE"-"$counter
@@ -171,6 +177,10 @@ if [ "$result_code" != "0" ]; then
     [[ $resp == *"Read timed out"* ]] && timed_out=true
 fi
 
+# setup handler to exit if zerssl gets into a loop during certificate validation 
+[[ $zerossl_timeout == true ]] && exit $ZEROSSL_TIMEOUT_ERROR;
+
+# handle error exit cases
 [[ $invalid_webroot_dir == true ]] && exit $WRONG_WEBROOT_ERROR;
 [[ $timed_out == true ]] && exit $TIME_OUT_ERROR;
 [[ $no_valid_ip == true ]] && { echo "$error"; exit $NO_VALID_IP_ADDRESSES; }

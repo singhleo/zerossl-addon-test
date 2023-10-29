@@ -146,7 +146,7 @@ do
 
     # Sign failed, finalize code is not 200.  -  ZeroSSL could not validate domain 
     [[ -z $error ]] && {
-      error=$(sed -rn 's/.*(Sign failed, finalize code is not 200. )(.*)\"\,/\1/p' $LOG_FILE | sed '$!d');
+      error=$(sed -rn 's/.*\s(.*)(Sign failed, finalize code is not 200.)/\1/p' $LOG_FILE | sed '$!d')
       [[ ! -z $error ]] && {
         sign_failed=true;
         break;

@@ -50,8 +50,13 @@ echo "Installing required packages"
     [ -d "${DIR}/opt/letsencrypt" ] && mv ${DIR}/opt/letsencrypt ${DIR}/opt/letsencrypt-certbot;
     git clone -b ${CLIENT_VERSION} https://github.com/acmesh-official/acme.sh ${DIR}/opt/letsencrypt;
   }
+
+  #switch to letsencrypt acme path
   cd $DIR/opt/letsencrypt/
+
+  #handle generic installation of acme.sh for zerosll
   ./acme.sh --server zerossl --install --no-cron --accountemail $email
+  
   # zerossl requires a registered account with zerossl ideall with EAB identification
   ./acme.sh  --server zerossl --register-account --insecure --force --eab-kid $RAPYDEABKID --eab-hmac-key $RAPYDEABHMAC
   

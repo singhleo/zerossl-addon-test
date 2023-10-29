@@ -1243,10 +1243,10 @@ function SSLManager(config) {
 
 
 
-        if (resp.result && resp.result == ZEROSSL_TIMED_OUT) {
+        if (resp.result && resp.result == ZEROSSL_TIMEOUT_ERROR) {
             text = "The ZeroSSL service has timed out. Check the /var/log/zerossl logs for more details or try again in a few minutes.";
             return {
-                result: ZEROSSL_TIMED_OUT,
+                result: ZEROSSL_TIMEOUT_ERROR,
                 error: text,
                 response: text,
                 type: "warning",

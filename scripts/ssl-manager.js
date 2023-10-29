@@ -1101,6 +1101,9 @@ function SSLManager(config) {
         SHELL_CODES[UPLOADER_ERROR] = 26;
         SHELL_CODES[READ_TIMED_OUT] = 27;
         SHELL_CODES[NO_VALID_IP_ADDRESSES] = 28;
+        
+        SHELL_CODES[NO_VALID_IP_ADDRESSES] = 29;
+        
     };
 
     me.generateSslCerts = function generateSslCerts() {

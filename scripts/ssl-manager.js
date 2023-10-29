@@ -44,7 +44,7 @@ function SSLManager(config) {
         READ_TIMED_OUT = 12007,
         NO_VALID_IP_ADDRESSES = 12008,
         ZEROSSL_TIMEOUT_ERROR = 12009,
-        ZEROSSL_TIMEOUT_ERROR = 12010,
+        ZEROSSL_SIGN_FAILED = 12010,
         VALIDATION_SCRIPT = "validation.sh",
         SHELL_CODES = {},
         INSTALL_LE_SCRIPT = "install-le.sh",
@@ -1101,8 +1101,9 @@ function SSLManager(config) {
         SHELL_CODES[INVALID_WEBROOT_DIR] = 25;
         SHELL_CODES[UPLOADER_ERROR] = 26;
         SHELL_CODES[READ_TIMED_OUT] = 27;
-        SHELL_CODES[NO_VALID_IP_ADDRESSES] = 28;        
-        SHELL_CODES[ZEROSSL_TIMED_OUT] = 29;
+        SHELL_CODES[NO_VALID_IP_ADDRESSES] = 28;       
+        SHELL_CODES[ZEROSSL_TIMEOUT_ERROR] = 29;    
+        SHELL_CODES[ZEROSSL_SIGN_FAILED] = 30;
         
     };
 
@@ -1253,6 +1254,22 @@ function SSLManager(config) {
             };
         }
 
+        if (resp.result && resp.result == ZEROSSL_SIGN_FAILED) {
+            text = "ZeroSSL was unable to authenticate the requested domains. Please check that all domains have been correctly associated with this sites IP Address before trying again.";
+            return {
+                result: ZEROSSL_SIGN_FAILED,
+                error: text,
+                response: text,
+                type: "error",
+                message: text
+            };
+        }
+        
+
+
+
+
+        
         
         if (resp.result && resp.result == READ_TIMED_OUT) {
             text = "The ZeroSSL service is currently unavailable. Check the /var/log/zerossl logs for more details or try again in a few minutes.";
@@ -1320,7 +1337,8 @@ function SSLManager(config) {
                 if (resp.exitStatus == SHELL_CODES[READ_TIMED_OUT]) return { result: READ_TIMED_OUT}
                 if (resp.exitStatus == SHELL_CODES[NO_VALID_IP_ADDRESSES]) return { result: NO_VALID_IP_ADDRESSES, response: resp.out }
                 if (resp.exitStatus == SHELL_CODES[RATE_LIMIT_EXCEEDED]) return { result: RATE_LIMIT_EXCEEDED, response: resp.out }
-                if (resp.exitStatus == SHELL_CODES[ZEROSSL_TIMED_OUT]) return { result: ZEROSSL_TIMED_OUT}
+                if (resp.exitStatus == SHELL_CODES[ZEROSSL_SIGN_FAILED]) return { result: ZEROSSL_SIGN_FAILED}
+                if (resp.exitStatus == SHELL_CODES[ZEROSSL_TIMEOUT_ERROR]) return { result: ZEROSSL_TIMEOUT_ERROR}
                 
             }
 

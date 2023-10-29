@@ -12,7 +12,7 @@ TIME_OUT_ERROR=27
 NO_VALID_IP_ADDRESSES=28
 ZEROSSL_TIMEOUT_ERROR=50
 counter=1
-maxcounter=10
+maxcounter=5
 
 [ -f "${SETTINGS}" ] && source "${SETTINGS}" || { echo "No settings available" ; exit 3 ; }
 [ -f "${DIR}/root/validation.sh" ] && source "${DIR}/root/validation.sh" || { echo "No validation library available" ; exit 3 ; }
@@ -78,7 +78,7 @@ while [ "$result_code" != "0" ]
 do
   [[ -z $domain ]] && break;
 
-  if [ "$counter" >= "$maxcounter" ]; then
+  if [ "$counter" -ge "$maxcounter" ]; then
     zerossl_timeout=true;
     break; 
   fi

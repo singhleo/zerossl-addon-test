@@ -69,13 +69,21 @@ mkdir -p $DIR/var/log/zerossl
 }
 result_code=$GENERAL_RESULT_ERROR;
 
+##############################################################################################################################################################
+##  main loop for ssl certificate
+##############################################################################################################################################################
+
 while [ "$result_code" != "0" ]
 do
   [[ -z $domain ]] && break;
+
+  # setup logfile
   LOG_FILE=$DEFAULT_LOG_FILE"-"$counter
 
+  # CALL ZeroSSL to deploy certificate
   resp=$($DIR/opt/letsencrypt/acme.sh --issue $params $test_params  --server zerossl --listen-v6 --domain $domain --nocron -f --log-level 2 --log $LOG_FILE 2>&1)
 
+  # find result flag
   grep -q 'Cert success' $LOG_FILE && grep -q "BEGIN CERTIFICATE" $LOG_FILE && result_code=0 || result_code=$GENERAL_RESULT_ERROR
 
   [[ "$result_code" == "$GENERAL_RESULT_ERROR" ]] && {

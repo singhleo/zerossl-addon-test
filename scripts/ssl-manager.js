@@ -1100,9 +1100,8 @@ function SSLManager(config) {
         SHELL_CODES[INVALID_WEBROOT_DIR] = 25;
         SHELL_CODES[UPLOADER_ERROR] = 26;
         SHELL_CODES[READ_TIMED_OUT] = 27;
-        SHELL_CODES[NO_VALID_IP_ADDRESSES] = 28;
-        
-        SHELL_CODES[NO_VALID_IP_ADDRESSES] = 29;
+        SHELL_CODES[NO_VALID_IP_ADDRESSES] = 28;        
+        SHELL_CODES[ZEROSSL_TIMED_OUT] = 29;
         
     };
 
@@ -1320,6 +1319,8 @@ function SSLManager(config) {
                 if (resp.exitStatus == SHELL_CODES[READ_TIMED_OUT]) return { result: READ_TIMED_OUT}
                 if (resp.exitStatus == SHELL_CODES[NO_VALID_IP_ADDRESSES]) return { result: NO_VALID_IP_ADDRESSES, response: resp.out }
                 if (resp.exitStatus == SHELL_CODES[RATE_LIMIT_EXCEEDED]) return { result: RATE_LIMIT_EXCEEDED, response: resp.out }
+                if (resp.exitStatus == SHELL_CODES[ZEROSSL_TIMED_OUT]) return { result: ZEROSSL_TIMED_OUT}
+                
             }
 
             //just cutting "out" for debug logging because it's too long in SSL generation output

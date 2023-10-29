@@ -1,7 +1,7 @@
 version: 2.1
 type: update
 build: 2023102721957
-id: zerossl-addon
+id: letsencrypt-ssl-addon
 name: Rapyd ZeroSSL Free SSL
 
 categories:
@@ -11,7 +11,44 @@ targetEditions: [ "devops", "wordpress", "lite_do", "lite_vultr", "lite_gc", "ul
 
 targetNodes:
   nodeType:
+    - tomcat6
+    - tomcat7
+    - tomcat8
+    - tomcat85
+    - tomcat9
+    - tomcat
+    - tomee
+    - tomee-dockerized
+    - glassfish3
+    - glassfish4
+    - glassfish
+    - jetty
+    - jetty6
+    - apache
+    - apache2
+    - nginxphp
+    - apache2-ruby
+    - nginx-ruby
+    - nginx
+    - nginx-dockerized
+    - nginxphp-dockerized
+    - haproxy
+    - apache-lb
+    - varnish
+    - varnish-dockerized
+    - payara
+    - wildfly
+    - nodejs
+    - apache-ruby
+    - apache-python
+    - nginxruby
+    - litespeedphp
+    - litespeedadc
+    - lemp
     - llsmp
+    - jenkins
+    - jenkins2
+
 
 baseUrl: https://raw.githubusercontent.com/rapyd-cloud/zerossl-addon/master
 
@@ -21,8 +58,8 @@ description:
     by either internal or custom domain name using ZeroSSL instead of LetsEncrypt
 
 globals:
-  scriptSufix: zerossl-addon
-  app_id: zerossl-addon
+  scriptSufix: letsencrypt-ssl
+  app_id: letsencrypt-ssl-addon
   
 mixins:
   - configs/vers.yaml
@@ -114,7 +151,7 @@ onInstall:
 onUninstall:
   - checkClustering:
       nodeGroup: ${globals.nodeGroup}
-      app_id: zerossl-addon
+      app_id: letsencrypt-ssl-addon
   - if (globals.cluster):
       - markExecutedEnvFile:
           nodeGroup: ${targetNodes.nodeGroup}
@@ -195,7 +232,7 @@ actions:
   configure: 
     - checkClustering:
         nodeGroup: ${globals.nodeGroup}
-        app_id: zerossl-addon
+        app_id: letsencrypt-ssl-addon
     - if (globals.cluster):
         - if (!globals.isOppositeExecuted):
             - markExecutedEnvFile:

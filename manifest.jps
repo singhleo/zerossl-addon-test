@@ -1,6 +1,6 @@
-version: 2.4
+version: 2.5
 type: update
-build: 202310291918
+build: 202310292323
 id: letsencrypt-ssl-addon
 name: Rapyd ZeroSSL Free SSL (letsencrypt-ssl-addon)
 

@@ -2,7 +2,7 @@ version: 2.1
 type: update
 build: 2023102721957
 id: letsencrypt-ssl-addon
-name: Rapyd ZeroSSL Free SSL
+name: Rapyd ZeroSSL Free SSL (letsencrypt-ssl-addon)
 
 categories:
 - apps/dev-and-admin-tools
@@ -105,7 +105,7 @@ onInstall:
   - api[${targetNodes.nodeGroup}]:
     - method: environment.control.AddContainerEnvVars
       params:
-        vars: '{ "RAPYDEABKID" : "NrwZSgyX-WzUrKXQuDd-HA" , "RAPYDEABHMAC" : "PWT-wo_Ge5GVZ63pC0rZefqTjBjBk0QBnPIDisM_3CUFpFwzCQvDtKdOEtus4HsURIIYUaE3sUKcdWaNHQbHeQ" }'
+        vars: '{ "RAPYDEABTYPE" : "zerossl" , "RAPYDEABKID" : "NrwZSgyX-WzUrKXQuDd-HA" , "RAPYDEABHMAC" : "PWT-wo_Ge5GVZ63pC0rZefqTjBjBk0QBnPIDisM_3CUFpFwzCQvDtKdOEtus4HsURIIYUaE3sUKcdWaNHQbHeQ" }'
   - setGlobals:
       nodeId: ${settings.nodeId:}
       nodeGroup: ${targetNodes.nodeGroup:}

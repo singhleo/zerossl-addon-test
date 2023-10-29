@@ -87,11 +87,13 @@ do
   LOG_FILE=$DEFAULT_LOG_FILE"-"$counter
   DEBUG_FILE=$DEFAULT_LOG_FILE"-debug-"$counter
   
-  # CALL ZeroSSL to deploy certificate
+  # CALL ZeroSSL to deploy 
+  echo "CALL:  $DIR/opt/letsencrypt/acme.sh --server zerossl --issue $params $test_params --listen-v6 --domain $domain --nocron -f --log-level 2 --log $LOG_FILE 2>&1 " > $DEBUG_FILE
+    
   resp=$($DIR/opt/letsencrypt/acme.sh --server zerossl --issue $params $test_params --listen-v6 --domain $domain --nocron -f --log-level 2 --log $LOG_FILE 2>&1)
 
   #echo "resp code: $resp" > $DEBUG_FILE
-  echo "result_code 1: $result_code" > $DEBUG_FILE
+  echo "result_code 1: $result_code" >> $DEBUG_FILE
 
   # find result flag
   grep -q 'Cert success' $LOG_FILE && grep -q "BEGIN CERTIFICATE" $LOG_FILE && result_code=0 || result_code=$GENERAL_RESULT_ERROR

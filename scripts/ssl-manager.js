@@ -43,6 +43,7 @@ function SSLManager(config) {
         UPLOADER_ERROR = 12006,
         READ_TIMED_OUT = 12007,
         NO_VALID_IP_ADDRESSES = 12008,
+        ZEROSSL_TIMED_OUT = 12009,
         VALIDATION_SCRIPT = "validation.sh",
         SHELL_CODES = {},
         INSTALL_LE_SCRIPT = "install-le.sh",
@@ -1238,10 +1239,10 @@ function SSLManager(config) {
 
 
 
-        if (resp.result && resp.result == READ_TIMED_OUT) {
+        if (resp.result && resp.result == ZEROSSL_TIMED_OUT) {
             text = "The ZeroSSL service has timed out. Check the /var/log/zerossl logs for more details or try again in a few minutes.";
             return {
-                result: READ_TIMED_OUT,
+                result: ZEROSSL_TIMED_OUT,
                 error: text,
                 response: text,
                 type: "warning",

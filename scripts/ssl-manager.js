@@ -44,6 +44,7 @@ function SSLManager(config) {
         READ_TIMED_OUT = 12007,
         NO_VALID_IP_ADDRESSES = 12008,
         ZEROSSL_TIMED_OUT = 12009,
+        ZEROSSL_TIMEOUT_ERROR = 12010,
         VALIDATION_SCRIPT = "validation.sh",
         SHELL_CODES = {},
         INSTALL_LE_SCRIPT = "install-le.sh",

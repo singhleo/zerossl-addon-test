@@ -11,8 +11,10 @@ UPLOAD_CERTS_ERROR=26
 TIME_OUT_ERROR=27
 NO_VALID_IP_ADDRESSES=28
 ZEROSSL_TIMEOUT_ERROR=29
+ZEROSSL_SIGN_FAILED=30
+
 counter=1
-maxcounter=3
+maxcounter=4
 
 [ -f "${SETTINGS}" ] && source "${SETTINGS}" || { echo "No settings available" ; exit 3 ; }
 [ -f "${DIR}/root/validation.sh" ] && source "${DIR}/root/validation.sh" || { echo "No validation library available" ; exit 3 ; }
@@ -142,6 +144,15 @@ do
       }
     }
 
+    # Sign failed, finalize code is not 200.  -  ZeroSSL could not validate domain 
+    [[ -z $error ]] && {
+      error=$(sed -rn 's/.*(Sign failed\, finalize code is not 200\.)(.*)\"\,/\2/p' $LOG_FILE | sed '$!d');
+      [[ ! -z $error ]] && {
+        sign_failed=true;
+        break;
+      }
+    }   
+
     all_invalid_domains_errors+=$error";"
     all_invalid_domains+=$invalid_domain" "
 
@@ -187,6 +198,9 @@ fi
 
 # setup handler to exit if zerssl gets into a loop during certificate validation 
 [[ $zerossl_timeout == true ]] && exit $ZEROSSL_TIMEOUT_ERROR;
+
+# handle signing process failed in ZeroSSL
+[[ $sign_failed == true ]] && exit $ZEROSSL_SIGN_FAILED;
 
 # handle error exit cases
 [[ $invalid_webroot_dir == true ]] && exit $WRONG_WEBROOT_ERROR;

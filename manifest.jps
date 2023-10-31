@@ -1,8 +1,8 @@
-version: 2.5
+version: 2.7
 type: update
-build: 202310292323
-id: letsencrypt-ssl-addon
-name: Rapyd ZeroSSL Free SSL (letsencrypt-ssl-addon)
+build: 202310311015
+id: zerossl-addon
+name: Rapyd ZeroSSL Free SSL
 
 categories:
 - apps/dev-and-admin-tools
@@ -57,8 +57,8 @@ description:
     by either internal or custom domain name using ZeroSSL instead of LetsEncrypt
 
 globals:
-  scriptSufix: letsencrypt-ssl
-  app_id: letsencrypt-ssl-addon
+  scriptSufix: zerossl-addon
+  app_id: zerossl-addon
   
 mixins:
   - configs/vers.yaml
@@ -150,7 +150,7 @@ onInstall:
 onUninstall:
   - checkClustering:
       nodeGroup: ${globals.nodeGroup}
-      app_id: letsencrypt-ssl-addon
+      app_id: zerossl-addon
   - if (globals.cluster):
       - markExecutedEnvFile:
           nodeGroup: ${targetNodes.nodeGroup}
@@ -231,7 +231,7 @@ actions:
   configure: 
     - checkClustering:
         nodeGroup: ${globals.nodeGroup}
-        app_id: letsencrypt-ssl-addon
+        app_id: zerossl-addon
     - if (globals.cluster):
         - if (!globals.isOppositeExecuted):
             - markExecutedEnvFile:

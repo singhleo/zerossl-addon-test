@@ -93,9 +93,10 @@ do
   DEBUG_FILE=$DEFAULT_LOG_FILE"-debug-"$counter
   
   # CALL ZeroSSL to deploy 
-  echo "CALL:  $DIR/opt/letsencrypt/acme.sh --server zerossl --issue $params $test_params --listen-v6 --domain $domain --nocron -f --log-level 2 --log $LOG_FILE 2>&1 " > $DEBUG_FILE
-    
-  resp=$($DIR/opt/letsencrypt/acme.sh --server zerossl --issue $params $test_params --listen-v6 --domain $domain --nocron -f --log-level 2 --log $LOG_FILE 2>&1)
+  echo "CALL:  $DIR/opt/letsencrypt/acme.sh --server zerossl --issue $params $test_params --domain $domain --nocron -f --log-level 2 --log $LOG_FILE 2>&1 " > $DEBUG_FILE
+
+  # remove --listen-v6  for now to test issue with blocking logs
+  resp=$($DIR/opt/letsencrypt/acme.sh --server zerossl --issue $params $test_params --domain $domain --nocron -f --log-level 2 --log $LOG_FILE 2>&1)
 
   #echo "resp code: $resp" > $DEBUG_FILE
   echo "result_code 1: $result_code" >> $DEBUG_FILE

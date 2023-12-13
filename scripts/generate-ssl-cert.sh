@@ -247,13 +247,15 @@ appdomain=$(cut -d"." -f2- <<< $appdomain)
 #find using old path format
 echo "checking certspath format 1" >> $DEBUG_FILE
 certspath=$(sed -n 's/.*][[:space:][:digit:]{4}[:space:]]Your[[:space:]]cert[[:space:]]is[[:space:]]in[[:space:]]\{2\}\(.*\)./\1/p' $LOG_FILE)
-echo "test certspath: $certspath" >> $DEBUG_FILE
+echo "test certspath 1: $certspath" >> $DEBUG_FILE
 
 #otherwise find using new acme 3.x.x format
 
 if [ -z "$certspath" ]
 then
-    certspath=$(sed -n 's/.*][[:space:][:digit:]{4}[:space:]]Your[[:space:]]cert[[:space:]]is[[:space:]]in:[[:space:]]\{2\}\(.*\)./\1/p' $LOG_FILE)
+    echo "checking certspath format 2" >> $DEBUG_FILE
+    certspath=$(sed -n 's/.*][[:space:][:digit:]{4}[:space:]]Your[[:space:]]cert[[:space:]]is[[:space:]]in\:[[:space:]]\{2\}\(.*\)./\1/p' $LOG_FILE)
+    echo "test certspath 2: $certspath" >> $DEBUG_FILE
 fi
 
 certdir=$(echo $certspath | sed 's/[^\/]*\.cer$//' | tail -n 1)

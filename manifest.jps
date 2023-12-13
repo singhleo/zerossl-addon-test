@@ -68,7 +68,7 @@ onInstall:
   - api[${targetNodes.nodeGroup}]:
     - method: environment.control.AddContainerEnvVars
       params:
-        vars: '{ "RAPYDEABTYPE" : "zerossl" , "RAPYDEABKID" : "NrwZSgyX-WzUrKXQuDd-HA" , "RAPYDEABHMAC" : "PWT-wo_Ge5GVZ63pC0rZefqTjBjBk0QBnPIDisM_3CUFpFwzCQvDtKdOEtus4HsURIIYUaE3sUKcdWaNHQbHeQ" }'
+        vars: '{ "RAPYDEABTYPE" : "zerossl" , "RAPYDEABKID" : "Ky2hm5bXoRirl1i8OtFOIg" , "RAPYDEABHMAC" : "S7wBLRAfGxU-7adk7WkUb7J6sUiCbATrFOVinxInVQn9XrqmHfYBM2zXvlIHp3EpLkGe5zj6qHpnMwXPefw13Q" }'
   - setGlobals:
       nodeId: ${settings.nodeId:}
       nodeGroup: ${targetNodes.nodeGroup:}

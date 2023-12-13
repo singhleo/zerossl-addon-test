@@ -254,7 +254,7 @@ echo "test certspath 1: $certspath" >> $DEBUG_FILE
 if [ -z "$certspath" ]
 then
     echo "checking certspath format 2" >> $DEBUG_FILE
-    certspath=$(sed -n 's/.*][[:space:][:digit:]{4}[:space:]]Your[[:space:]]cert[[:space:]]is[[:space:]]in\:[[:space:]]\{2\}\(.*\)./\1/p' $LOG_FILE)
+    certspath=$(sed -n 's/.*][[:space:]]Your[[:space:]]cert[[:space:]]is[[:space:]]in[\:][[:space:]]\{2\}\(.*\)./\1/p' $LOG_FILE)
     echo "test certspath 2: $certspath" >> $DEBUG_FILE
 fi
 

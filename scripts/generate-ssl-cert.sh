@@ -17,7 +17,9 @@ ZEROSSL_TIMEOUT_ERROR=29
 ZEROSSL_SIGN_FAILED=30
 
 counter=1
-maxcounter=4
+
+#Set maximum loop time to try 4 times in timeout situations
+maxcounter=5 
 
 [ -f "${SETTINGS}" ] && source "${SETTINGS}" || { echo "No settings available" ; exit 3 ; }
 [ -f "${DIR}/root/validation.sh" ] && source "${DIR}/root/validation.sh" || { echo "No validation library available" ; exit 3 ; }
@@ -73,7 +75,15 @@ mkdir -p $DIR/var/log/zerossl
     ip6tables -t nat -I PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports ${LE_PORT} || ip6tables -I INPUT -p tcp -m tcp --dport 80 -j DROP
  fi
 }
+
+# setup default result_code
 result_code=$GENERAL_RESULT_ERROR;
+
+# setup default logfile
+LOG_FILE=$DEFAULT_LOG_FILE"-"$counter
+DEBUG_FILE=$DEFAULT_LOG_FILE"-debug-"$counter
+
+echo "Starting log - initialized only: " > $DEBUG_FILE
 
 ##############################################################################################################################################################
 ##  main loop for ssl certificate
@@ -92,19 +102,18 @@ do
   LOG_FILE=$DEFAULT_LOG_FILE"-"$counter
   DEBUG_FILE=$DEFAULT_LOG_FILE"-debug-"$counter
   
-  # CALL ZeroSSL to deploy 
-  echo "CALL:  $DIR/opt/letsencrypt/acme.sh --server zerossl --issue $params $test_params --domain $domain --nocron -f --log-level 2 --log $LOG_FILE 2>&1 " > $DEBUG_FILE
+  echo "Starting log - ready to issue: " > $DEBUG_FILE
+  
+  echo "CALL:  $DIR/opt/letsencrypt/acme.sh --server zerossl --issue $params $test_params --domain $domain --nocron -f --log-level 2 --log $LOG_FILE 2>&1 " >> $DEBUG_FILE
 
   # remove --listen-v6  for now to test issue with blocking logs
   resp=$($DIR/opt/letsencrypt/acme.sh --server zerossl --issue $params $test_params --domain $domain --nocron -f --log-level 2 --log $LOG_FILE 2>&1)
 
-  #echo "resp code: $resp" > $DEBUG_FILE
-  echo "result_code 1: $result_code" >> $DEBUG_FILE
-
   # find result flag
   grep -q 'Cert success' $LOG_FILE && grep -q "BEGIN CERTIFICATE" $LOG_FILE && result_code=0 || result_code=$GENERAL_RESULT_ERROR
 
-  echo "result_code 2: $result_code" >> $DEBUG_FILE
+  # log result code
+  echo "result_code 1: $result_code" >> $DEBUG_FILE
 
   [[ "$result_code" == "$GENERAL_RESULT_ERROR" ]] && {
     error=$(sed -rn 's/.*\s(.*)(DNS problem: .*?)",\"status.*/\2/p' $LOG_FILE | sed '$!d')
@@ -200,28 +209,63 @@ if [ "$result_code" != "0" ]; then
     [[ $resp == *"Read timed out"* ]] && timed_out=true
 fi
 
+#####################################################
+
 # setup handler to exit if zerssl gets into a loop during certificate validation 
+echo "checking for zerossl_timeout error" >> $DEBUG_FILE
 [[ $zerossl_timeout == true ]] && exit $ZEROSSL_TIMEOUT_ERROR;
 
 # handle signing process failed in ZeroSSL
+echo "checking for sign_failed" >> $DEBUG_FILE
 [[ $sign_failed == true ]] && exit $ZEROSSL_SIGN_FAILED;
 
 # handle error exit cases
+echo "checking for invalid_webroot_dir" >> $DEBUG_FILE
 [[ $invalid_webroot_dir == true ]] && exit $WRONG_WEBROOT_ERROR;
+
+echo "checking for timed_out" >> $DEBUG_FILE
 [[ $timed_out == true ]] && exit $TIME_OUT_ERROR;
+
+echo "checking for no_valid_ip" >> $DEBUG_FILE
 [[ $no_valid_ip == true ]] && { echo "$error"; exit $NO_VALID_IP_ADDRESSES; }
+
+echo "checking for rate_limit_exceeded" >> $DEBUG_FILE
 [[ $rate_limit_exceeded == true ]] && { echo "$error"; exit $TOO_MANY_CERTS; }
+
+echo "checking for bad result_code" >> $DEBUG_FILE
 [[ $result_code != "0" ]] && { echo "$all_invalid_domains_errors"; exit $GENERAL_RESULT_ERROR; }
+
+
+#####################################################
+echo "ok to process " >> $DEBUG_FILE
 
 #To be sure that r/w access
 mkdir -p /tmp/
 chmod -R 777 /tmp/
 appdomain=$(cut -d"." -f2- <<< $appdomain)
 
+#find using old path format
+echo "checking certspath format 1" >> $DEBUG_FILE
 certspath=$(sed -n 's/.*][[:space:][:digit:]{4}[:space:]]Your[[:space:]]cert[[:space:]]is[[:space:]]in[[:space:]]\{2\}\(.*\)./\1/p' $LOG_FILE)
+echo "test certspath: $certspath" >> $DEBUG_FILE
+
+#otherwise find using new acme 3.x.x format
+
+if [ -z "$certspath" ]
+then
+    certspath=$(sed -n 's/.*][[:space:][:digit:]{4}[:space:]]Your[[:space:]]cert[[:space:]]is[[:space:]]in:[[:space:]]\{2\}\(.*\)./\1/p' $LOG_FILE)
+fi
+
 certdir=$(echo $certspath | sed 's/[^\/]*\.cer$//' | tail -n 1)
 certname=$(echo $certspath | sed 's/.*\///' | tail -n 1)
 certdomain=$(echo $certspath | sed 's/.*\///' | sed 's/\.cer$//')
+
+echo "appdomain:  $appdomain " >> $DEBUG_FILE
+echo "KEYS_DIR:   $KEYS_DIR" >> $DEBUG_FILE
+echo "certspath:  $certspath" >> $DEBUG_FILE
+echo "certdir:    $certdir" >> $DEBUG_FILE
+echo "certname:   $certname" >> $DEBUG_FILE
+echo "certdomain: $certdomain" >> $DEBUG_FILE
 
 mkdir -p $KEYS_DIR
 
@@ -236,10 +280,14 @@ function uploadCerts() {
     local certdir="$1"
     echo appid = $appid
     echo appdomain = $appdomain
+
     #Upload 3 certificate files
     uploadresult=$(curl -F "appid=$appid" -F "fid=privkey.pem" -F "file=@${certdir}/${certdomain}.key" -F "fid=fullchain.pem" -F "file=@${certdir}/ca.cer" -F "fid=cert.pem" -F "file=@${certdir}/${certdomain}.cer" http://$primarydomain/xssu/rest/upload)
-
     result_code=$?;
+
+    echo "get uploadresult: $uploadresult" >> $DEBUG_FILE
+    echo "get result_code: $result_code" >> $DEBUG_FILE
+    
     [[ $result_code != 0 ]] && { echo "$uploadresult" && exit $UPLOAD_CERTS_ERROR; }
     
     #Save urls to certificate files
@@ -261,5 +309,8 @@ while [[ "$1" != "" ]]; do
     shift
 done
 
+echo "ready to uploadCerts: $certdir" >> $DEBUG_FILE
+
 uploadCerts $certdir;
+
 #[ "$withExtIp" == "true" ] && { uploadCerts $certdir; }

@@ -262,6 +262,7 @@ certdir=$(echo $certspath | sed 's/[^\/]*\.cer$//' | tail -n 1)
 certname=$(echo $certspath | sed 's/.*\///' | tail -n 1)
 certdomain=$(echo $certspath | sed 's/.*\///' | sed 's/\.cer$//')
 
+echo "primarydomain:  $primarydomain " >> $DEBUG_FILE
 echo "appdomain:  $appdomain " >> $DEBUG_FILE
 echo "KEYS_DIR:   $KEYS_DIR" >> $DEBUG_FILE
 echo "certspath:  $certspath" >> $DEBUG_FILE
@@ -291,11 +292,15 @@ function uploadCerts() {
     echo "get result_code: $result_code" >> $DEBUG_FILE
     
     [[ $result_code != 0 ]] && { echo "$uploadresult" && exit $UPLOAD_CERTS_ERROR; }
+
+    echo "saving urls to certificate files " >> $DEBUG_FILE
     
     #Save urls to certificate files
     echo $uploadresult | awk -F '{"file":"' '{print $2}' | awk -F ":\"" '{print $1}' | sed 's/","name"//g' > /tmp/privkey.url
     echo $uploadresult | awk -F '{"file":"' '{print $3}' | awk -F ":\"" '{print $1}' | sed 's/","name"//g' > /tmp/fullchain.url
     echo $uploadresult | awk -F '{"file":"' '{print $4}' | awk -F ":\"" '{print $1}' | sed 's/","name"//g' > /tmp/cert.url
+
+    echo "file save complete " >> $DEBUG_FILE
 
     sed -i '/^\s*$/d' /tmp/*.url
     exit 0;

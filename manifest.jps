@@ -1,8 +1,8 @@
-version: 3.0
+version: 3.7
 type: update
-build: 202310311431
+build: 202312251027PM
 id: zerossl-addon
-name: Rapyd ZeroSSL Free SSL 3.0
+name: Rapyd ZeroSSL Free SSL 3.7
 
 categories:
 - apps/dev-and-admin-tools

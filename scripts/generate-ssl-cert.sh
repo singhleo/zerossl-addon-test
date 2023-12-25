@@ -254,7 +254,7 @@ echo "test certspath 1: $certspath" >> $DEBUG_FILE
 if [ -z "$certspath" ]
 then
     echo "checking certspath format 2" >> $DEBUG_FILE
-    certspath=$(sed -n 's/.*][[:space:]]Your[[:space:]]cert[[:space:]]is[[:space:]]in[\:][[:space:]]\{2\}\(.*\)./\1/p' $LOG_FILE)
+    certspath=$(sed -n -e 's/^.*'[[:space:]]Your[[:space:]]cert[[:space:]]is[[:space:]]in\:[[:space:]]'//p' $LOG_FILE)
     echo "test certspath 2: $certspath" >> $DEBUG_FILE
 fi
 
@@ -291,7 +291,10 @@ function uploadCerts() {
     echo "get uploadresult: $uploadresult" >> $DEBUG_FILE
     echo "get result_code: $result_code" >> $DEBUG_FILE
     
-    [[ $result_code != 0 ]] && { echo "$uploadresult" && exit $UPLOAD_CERTS_ERROR; }
+    [[ $result_code != 0 ]] && { 
+        echo "$uploadresult"
+        exit $UPLOAD_CERTS_ERROR 
+      }
 
     echo "saving urls to certificate files " >> $DEBUG_FILE
     

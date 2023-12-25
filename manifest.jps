@@ -64,7 +64,9 @@ buttons:
     action: configure
 
 onInstall:
-
+  - cmd[${targetNodes.nodeGroup}]: |-
+      rm -rf /opt/letsencrypt
+    user: root
   - api[${targetNodes.nodeGroup}]:
     - method: environment.control.AddContainerEnvVars
       params:

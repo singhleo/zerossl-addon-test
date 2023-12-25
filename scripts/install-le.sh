@@ -2,6 +2,11 @@
 
 source /etc/profile
 
+# clean up any old version 
+rm -rf /opt/letsencrypt
+# clean up any old version 
+
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..";
 WGET=$(which wget);
 BASE_URL=$1

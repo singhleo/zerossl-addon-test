@@ -109,7 +109,6 @@ onInstall:
   - else:
       installScript
     
-
 onUninstall:
   - checkClustering:
       nodeGroup: ${globals.nodeGroup}

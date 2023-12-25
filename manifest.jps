@@ -108,7 +108,7 @@ onInstall:
           installScript
   - else:
       installScript
-    
+
 onUninstall:
   - checkClustering:
       nodeGroup: ${globals.nodeGroup}

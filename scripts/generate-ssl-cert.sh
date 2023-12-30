@@ -18,8 +18,8 @@ ZEROSSL_SIGN_FAILED=30
 
 counter=1
 
-#Set maximum loop time to try 3 times in timeout situations
-maxcounter=4 
+#Set maximum loop time to try 4 times in timeout situations
+maxcounter=5
 
 [ -f "${SETTINGS}" ] && source "${SETTINGS}" || { echo "No settings available" ; exit 3 ; }
 [ -f "${DIR}/root/validation.sh" ] && source "${DIR}/root/validation.sh" || { echo "No validation library available" ; exit 3 ; }

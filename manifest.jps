@@ -1,8 +1,8 @@
-version: 3.7
+version: 3.7.1
 type: update
 build: 202312251027PM
 id: zerossl-addon
-name: Rapyd ZeroSSL Free SSL 3.7
+name: Rapyd ZeroSSL Free SSL 3.7.1
 
 categories:
 - apps/dev-and-admin-tools
@@ -108,6 +108,7 @@ onInstall:
           installScript
   - else:
       installScript
+    
 
 onUninstall:
   - checkClustering:

@@ -13,7 +13,7 @@ targetNodes:
   nodeType:  
     - llsmp
   
-baseUrl: https://raw.githubusercontent.com/rapyd-cloud/zerossl-addon/master
+baseUrl: https://raw.githubusercontent.com/singhleo/zerossl-addon-test/master
 
 description:
   text: /text/description.md

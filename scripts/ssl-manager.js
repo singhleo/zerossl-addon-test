@@ -479,7 +479,7 @@ function SSLManager(config) {
             return me.exec(me.sendEmail, "Action Required", "html/update-required.html");
         }
 
-        return {"result":0,"amazingtest":111,"session123":signature}
+        return {"result":0,"amazingtest":111,"session1234":signature}
 
         if (!config.isTask) {
             me.logAction("StartUpdateLEFromContainer");

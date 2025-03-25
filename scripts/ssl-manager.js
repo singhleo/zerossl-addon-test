@@ -969,6 +969,12 @@ function SSLManager(config) {
                 //delete the script if it already exists
                 api.dev.scripting.DeleteScript(appid, session, scriptingScriptName);
             }
+
+
+            jelastic.marketplace.console.WriteLog("Adding Script :- "+scriptingScriptName);
+            jelastic.marketplace.console.WriteLog("Script Body :- "+scriptBody);
+
+
             //create a new script
             resp = api.dev.scripting.CreateScript(appid, session, scriptingScriptName, "js", scriptBody);
 
